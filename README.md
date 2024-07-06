@@ -2,14 +2,13 @@
 records awesome py IOT project
 
 ### aiomqtt + fastapi 【app.py】
-是什么？
-本例子 主要是适用于工业IOT场景，需要消费大量实时工艺数据,使用深度模型预测性监控工艺的合格度，从而提高产品品控，减少人力投入，提高ROI指标
-为什么？
+
+#### 是什么？  
+本例子 主要是适用于工业IOT场景，需要消费大量实时工艺数据,使用深度模型预测性监控工艺的合格度，从而提高产品品控，减少人力投入，提高ROI指标  
+#### 为什么？  
 为什么使用python？因为很多深度模型需要python；需要一个后台服务，所以写了基于fastapi服务 + aiomqtt 异步消费mqtt
-
-怎么做
-1.使用asyncio 异步协程 处理高并发问题，
-
+#### 怎么做?  
+1.使用asyncio 异步协程 处理高并发问题  
 @contextlib.asynccontextmanager 允许你通过定义异步上下文管理器，在不同生命周期阶段执行特定的异步操作。在 FastAPI 的 lifespan 中使用这种方式，可以确保在应用程序启动和关闭时，能够按照预期地管理异步任务和资源
 在异步函数中，yield 通常结合 asyncio 的相关方法使用，用于暂停当前函数的执行，并将控制权返回给事件循环（event loop）
 yield之后 类似于 before unmounted Server【服务卸载之前】执行的操作
@@ -30,9 +29,7 @@ app = FastAPI(lifespan=lifespan)
 ```
 
 
-2.mqtt 使用 aiomqtt 异步订阅topic，mqtt 订阅topic 和 发送端 最好使用 Qos 为 1；提高消息接收率
-
-mqtt Qos如下
+2.mqtt 使用 aiomqtt 异步订阅topic，mqtt 订阅topic 和 发送端 最好使用 Qos 为 1；提高消息接收率,mqtt Qos如下  
 ```txt
 QoS 0 - 最多一次传递（At most once）：
 这是最低的服务质量级别，消息发布者发送消息后，不会收到任何确认。消息可能会丢失或重复，也没有重新传输的机制。适用于实时性要求不高，且消息丢失或重复对系统影响不大的场景。
@@ -74,7 +71,8 @@ async def message_consumer(client):
         asyncio.create_task(foo(sem,message))
 
 ```
-5. 深度学习 【代码还未加入】
+
+5.深度学习 【代码暂时不展示】
 主要使用 数据增强 做数据集，多分类的思想 训练模型，然后构建网络骨架 在fastapi 服务内消费 和判断 工艺曲线数据的合格率
 
 
