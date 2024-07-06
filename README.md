@@ -30,7 +30,7 @@ app = FastAPI(lifespan=lifespan)
 ```
 
 
-2.mqtt 使用 aiomqtt 异步订阅topic，mqtt 订阅topic 和 发送端 最好使用 Qos 为 1；提高消息接收率 [本项目使用0 只作参考]
+2.mqtt 使用 aiomqtt 异步订阅topic，mqtt 订阅topic 和 发送端 最好使用 Qos 为 1；提高消息接收率
 
 mqtt Qos如下
 ```txt
