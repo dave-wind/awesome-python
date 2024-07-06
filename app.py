@@ -19,14 +19,15 @@ client = None
 
 async def subscribe_to_topic(client, topic):
         async with sem:
-            await client.subscribe(topic)
+            await client.subscribe(topic,1)
             await asyncio.sleep(0.1)
             print(f"Subscribed to topic: {topic}")
-        
 
-async def message_consumer(client):
-    async for message in client.messages:
-        asyncio.create_task(foo(sem,message))
+
+async def message_consumer(message):
+    async with sem:  # 使用异步上下文管理器获取信号量
+        await asyncio.sleep(1)  # 模拟一个IO操作
+        print(f"Received message on topic {message.topic}: {message.payload.decode()} 时间：{get_time()}")
 
 
 def get_time():
@@ -35,13 +36,6 @@ def get_time():
     local_time = time.localtime(current_time)
     # 格式化时间
     return time.strftime('%Y-%m-%d %H:%M:%S', local_time)
-
-async def foo(message):
-    async with sem:  # 使用异步上下文管理器获取信号量
-        await asyncio.sleep(1)  # 模拟一个IO操作
-        print(f"Received message on topic {message.topic}: {message.payload.decode()} 时间：{get_time()}")
-
-
 
 
 async def run_mqtt():
@@ -79,7 +73,7 @@ async def run_mqtt():
 
                 loop = asyncio.get_event_loop()
                 async for message in c.messages:
-                     loop.create_task(foo(message))
+                     loop.create_task(message_consumer(message))
         except aiomqtt.MqttError as e:
             print(f"断连错误: {e}; Reconnecting in {interval} seconds ...")
             await asyncio.sleep(interval)
