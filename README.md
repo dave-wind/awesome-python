@@ -44,7 +44,7 @@ QoS 2 - 刚好一次传递（Exactly once）：
 ```python3
    while True:
         try:
-            async with aiomqtt.Client('10.165.39.69',1883,username='admin',password='mop666666') as c:
+            async with aiomqtt.Client('xxxx',1883,username='xxx',password='xxxxx') as c:
                 client = c
                 await asyncio.gather(*[subscribe_to_topic(client, topic) for topic in topics])
 
